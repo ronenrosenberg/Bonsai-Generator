@@ -1,13 +1,7 @@
 #include "FPToolkit.c"
 
-typedef struct {
-    int depth;
-    int max_depth;
-    double x;
-    double y;
-    double theta;
-} Recursion_State;
 
+//random functions
 int rand_int(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
@@ -63,8 +57,18 @@ int leaf(double x, double y, double size, double this_theta) {
     G_fill_polygon(leaf_x, leaf_y, 4);
 }
 
+//all recursion state info is held in these structs
+typedef struct {
+    int depth;
+    int max_depth;
+    double x;
+    double y;
+    double theta;
+} Recursion_State;
+
+//I don't want to explain this
 void tree(Recursion_State r_state) {
-    if (r_state.depth == r_state.max_depth) { //|| rand_doub() < r_state.depth/20.
+    if (r_state.depth == r_state.max_depth) {
         for (int i=0; i < rand_int(4, 7); i++) {
             leaf(r_state.x, r_state.y, 30, r_state.theta + rand_int(-120, 120));  
         }
@@ -128,6 +132,7 @@ void main() {
         G_fill_rectangle(50, 250, 500, 600);
         G_rgb(0.5, 0.03, 0.03);
         G_fill_triangle(50, 850, 300, 1000, 550, 850);
+
         //draws recursive tree
         Recursion_State r_state = {
             .max_depth = 9,
@@ -136,6 +141,7 @@ void main() {
         }; 
         tree(r_state);
 
+        //quit
         if (G_wait_key() == 'q') {
             break;
         }

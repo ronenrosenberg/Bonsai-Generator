@@ -39,7 +39,7 @@ void branch(double coord[2], double width, double length, double this_theta) {
     G_fill_polygon(branch_x, branch_y, 4);
 }
 
-int leaf(double x, double y, double size, double this_theta) {
+void leaf(double x, double y, double size, double this_theta) {
     double left[2] = {x, y};
     double right[2] = {x, y};
     double center[2] = {x, y};
@@ -75,12 +75,12 @@ void tree(Recursion_State r_state) {
         return;
     }
     r_state.depth++;
-    
+
     for (int i=0; i < fmin(2, r_state.depth * rand_doub() * 1.2); i++) {
         double coord[2] = {r_state.x, r_state.y};
         
         int spread = fmin(70, r_state.depth * 30);
-        if (r_state.depth == 1) spread = rand_int(0, 20);
+        if (r_state.depth == 1) spread = rand_int(0, 25);
         double new_theta = rand_int(-spread, spread);
         branch(coord, 120/r_state.depth, 330/r_state.depth, r_state.theta + new_theta); //this modifies in place coord
 
@@ -97,7 +97,7 @@ void tree(Recursion_State r_state) {
     }
 }
 
-void main() {
+int main() {
     //makes rand less deterministic
     srand(time(NULL));
 
@@ -110,7 +110,7 @@ void main() {
         //sky
         G_rgb(0.529, 0.808, 0.97);
         G_clear();
-        
+
         //grass
         G_rgb(0, 1, 0);
         G_fill_rectangle(0, 0, screen_x, screen_y/2);
@@ -127,11 +127,16 @@ void main() {
         G_fill_circle(1100, 1400, 100);
         G_fill_circle(1100, 1300, 100);
 
+        //sun
+        G_rgb(1.0, 0.843, 0.0);
+        G_fill_circle(200, 1300, 100);
+
         //house
         G_rgb(1, 1, 0.85);
         G_fill_rectangle(50, 250, 500, 600);
         G_rgb(0.5, 0.03, 0.03);
         G_fill_triangle(50, 850, 300, 1000, 550, 850);
+
 
         //draws recursive tree
         Recursion_State r_state = {
